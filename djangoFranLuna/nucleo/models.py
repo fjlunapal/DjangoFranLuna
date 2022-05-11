@@ -7,7 +7,7 @@ class Medico(models.Model):
     nombre=models.CharField(max_length=30, null=False, blank=False, verbose_name='Nombre')
     apellidos=models.CharField(max_length=50, null=False, blank=False, verbose_name='Apellidos')
     edad=models.IntegerField(null=False, blank=False, verbose_name='Edad')
-    fechaAlta=models.IntegerField(null=False, blank=False, verbose_name='Fecha de alta')
+    fechaAlta=models.DateField(null=False, blank=False, verbose_name='Fecha de alta')
     
     especialidades=(
         (1, 'familia'),
@@ -16,7 +16,7 @@ class Medico(models.Model):
         (4, 'dematologia'),
         (5, 'traumatologia'),
     )
-    especialidad=models.CharField(max_length=40, null=False, blank=False, choices=especialidades, verbose_name='Especialidad')
+    especialidad=models.IntegerField(max_length=40, null=False, blank=False, choices=especialidades, verbose_name='Especialidad')
     usuario= models.CharField(max_length=30, unique=True, null=False, blank=False, verbose_name='Usuario')
     password= models.CharField(max_length=30, null=False, blank=False, verbose_name='Password')
 
@@ -26,7 +26,7 @@ class Medico(models.Model):
         ordering=["-id"]
 
     def __str__(self):
-        return self.nombre+" "+self.apellidos+" "+str(self.edad)+" "+str(self.fechaalta)+" "+self.especialidad+" "+self.username+" "+self.password
+        return self.nombre+" "+self.apellidos+" "+str(self.edad)+" "+self.usuario+" "+self.password
 
 class Medicamento(models.Model):
     id = models.AutoField(primary_key=True)
@@ -37,7 +37,7 @@ class Medicamento(models.Model):
         (1, 's'),
         (2, 'n'),
     )
-    receta = models.CharField(max_length=1, null=False, blank=False, choices=recetas, default=1, verbose_name="Receta")
+    receta = models.IntegerField(max_length=1, null=False, blank=False, choices=recetas, default=1, verbose_name="Receta")
     precio = models.FloatField(null=False, blank=False, verbose_name="Precio")
     stock = models.IntegerField(null=False, blank=False, verbose_name="Stock")
     
@@ -47,7 +47,7 @@ class Medicamento(models.Model):
         ordering = ["-id"]
 
     def __str__(self):
-        return self.nombre+" "+self.descripcion+" "+self.receta+" "+str(self.precio)+" "+str(self.stock)
+        return self.nombre+" "+self.descripcion+" "+str(self.precio)+" "+str(self.stock)
 
 class Paciente(models.Model):
     id = models.AutoField(primary_key=True)
@@ -55,7 +55,7 @@ class Paciente(models.Model):
     apellidos = models.CharField(max_length=50, null=False, blank=False, verbose_name="Apellidos")
     edad = models.IntegerField(null=False, blank=False, verbose_name="Edad")
     direccion = models.CharField(max_length=100, null=False, blank=False, verbose_name="Dirección")
-    foto = models.ImageField(verbose_name="Foto", upload_to="fotos/pacientes/", unique=True, null=False, blank=False)
+    foto = models.ImageField(verbose_name="Foto", upload_to="fotos/pacientes/", unique=True, null=True, blank=True)
     activo = models.BooleanField(default=False)
     usuario = models.CharField(max_length=30, unique=True, null=False, blank=False, verbose_name="Usuario")
     password = models.CharField(max_length=30, null=False, blank=False, verbose_name="Password")
@@ -66,7 +66,7 @@ class Paciente(models.Model):
         ordering = ["-id"]
 
     def __str__(self):
-        return self.nombre+" "+self.apellidos+" "+str(self.edad)+" "+self.direccion+" "+str(self.foto)+" "+self.username+" "+self.password
+        return self.nombre+" "+self.apellidos+" "+str(self.edad)+" "+self.direccion+" "+str(self.foto)+" "+self.usuario+" "+self.password
 
 class Cita(models.Model):
     id = models.AutoField(primary_key=True)
